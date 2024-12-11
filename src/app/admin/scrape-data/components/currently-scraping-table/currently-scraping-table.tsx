@@ -187,23 +187,24 @@ export default function CurrentlyScrapingTable({ jobs }: { jobs: JobType[] }) {
 
   const topContent = React.useMemo(() => {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
+      <div className="flex flex-col gap-4 bg-white text-gray-700 p-4 rounded-lg shadow-md">
+        <div className="flex justify-between gap-3 items-end bg-white p-2 rounded-md shadow-sm">
           <Input
             isClearable
-            className="w-full sm:max-w-[44%]"
+            className="w-full sm:max-w-[44%] bg-gray-100 text-gray-700"
             placeholder="Search by name..."
-            startContent={<FaSearch />}
+            startContent={<FaSearch className="text-gray-500" />}
             value={filterValue}
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
-          <div className="flex gap-3">
+          <div className="flex gap-3 bg-white">
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
-                  endContent={<FaChevronDown className="text-small" />}
+                  endContent={<FaChevronDown className="text-small text-gray-500" />}
                   variant="flat"
+                  className="bg-gray-100 text-gray-700 hover:bg-gray-200"
                 >
                   Status
                 </Button>
@@ -217,7 +218,7 @@ export default function CurrentlyScrapingTable({ jobs }: { jobs: JobType[] }) {
                 onSelectionChange={setStatusFilter}
               >
                 {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
+                  <DropdownItem key={status.uid} className="capitalize text-gray-700">
                     {status.name}
                   </DropdownItem>
                 ))}
@@ -225,14 +226,14 @@ export default function CurrentlyScrapingTable({ jobs }: { jobs: JobType[] }) {
             </Dropdown>
           </div>
         </div>
-        <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">
+        <div className="flex justify-between items-center bg-gray-50 p-2 rounded-md shadow-sm">
+          <span className="text-gray-600 text-small">
             Total {jobs.length} jobs
           </span>
-          <label className="flex items-center text-default-400 text-small">
+          <label className="flex items-center text-gray-600 text-small">
             Rows per page:
             <select
-              className="bg-transparent outline-none text-default-400 text-small"
+              className="bg-gray-100 outline-none text-gray-700 ml-1 rounded-md p-1"
               onChange={onRowsPerPageChange}
             >
               <option value="5">5</option>
@@ -243,6 +244,7 @@ export default function CurrentlyScrapingTable({ jobs }: { jobs: JobType[] }) {
         </div>
       </div>
     );
+    
   }, [
     filterValue,
     onSearchChange,
@@ -254,8 +256,8 @@ export default function CurrentlyScrapingTable({ jobs }: { jobs: JobType[] }) {
 
   const bottomContent = React.useMemo(() => {
     return (
-      <div className="py-2 px-2 flex justify-between items-center">
-        <span className="w-[30%] text-small text-default-400">
+      <div className="py-2 px-2 flex justify-between items-center bg-white text-gray-700 rounded-md shadow-sm">
+        <span className="w-[30%] text-small text-gray-100">
           {selectedKeys === "all"
             ? "All items selected"
             : `${selectedKeys.size} of ${filteredItems.length} selected`}
@@ -274,6 +276,7 @@ export default function CurrentlyScrapingTable({ jobs }: { jobs: JobType[] }) {
             isDisabled={pages === 1}
             size="sm"
             variant="flat"
+            className="bg-gray-100 text-gray-700 hover:bg-gray-200"
             onPress={onPreviousPage}
           >
             Previous
@@ -282,6 +285,7 @@ export default function CurrentlyScrapingTable({ jobs }: { jobs: JobType[] }) {
             isDisabled={pages === 1}
             size="sm"
             variant="flat"
+            className="bg-gray-100 text-gray-700 hover:bg-gray-200"
             onPress={onNextPage}
           >
             Next
@@ -289,6 +293,7 @@ export default function CurrentlyScrapingTable({ jobs }: { jobs: JobType[] }) {
         </div>
       </div>
     );
+    
   }, [
     selectedKeys,
     filteredItems.length,
@@ -299,41 +304,43 @@ export default function CurrentlyScrapingTable({ jobs }: { jobs: JobType[] }) {
   ]);
 
   return (
-    <Table
-      aria-label="Example table with custom cells, pagination and sorting"
-      isHeaderSticky
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      classNames={{
-        wrapper: "max-h-[382px]",
-      }}
-      selectedKeys={selectedKeys}
-      selectionMode="multiple"
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={"No jobs found"} items={items}>
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
-  );
+  <Table
+    aria-label="Example table with custom cells, pagination and sorting"
+    isHeaderSticky
+    bottomContent={bottomContent}
+    bottomContentPlacement="outside"
+    classNames={{
+      wrapper: "max-h-[382px] bg-white border border-gray-200 rounded-md shadow-sm",
+    }}
+    selectedKeys={selectedKeys}
+    selectionMode="multiple"
+    sortDescriptor={sortDescriptor}
+    topContent={topContent}
+    topContentPlacement="outside"
+    onSelectionChange={setSelectedKeys}
+    onSortChange={setSortDescriptor}
+  >
+    <TableHeader columns={headerColumns} className="bg-white">
+      {(column) => (
+        <TableColumn
+          key={column.uid}
+          align={column.uid === "actions" ? "center" : "start"}
+          className="text-gray-200 font-medium"
+        >
+          {column.name}
+        </TableColumn>
+      )}
+    </TableHeader>
+    <TableBody emptyContent={"No jobs found"} items={items} className="bg-white">
+      {(item) => (
+        <TableRow key={item.id} className="hover:bg-gray-100">
+          {(columnKey) => (
+            <TableCell className="text-gray-600">{renderCell(item, columnKey)}</TableCell>
+          )}
+        </TableRow>
+      )}
+    </TableBody>
+  </Table>
+);
+
 }
