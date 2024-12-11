@@ -28,3 +28,4 @@ model Jobs {
   jobType Json
   createdAt DateTime @default(now())
 }
+

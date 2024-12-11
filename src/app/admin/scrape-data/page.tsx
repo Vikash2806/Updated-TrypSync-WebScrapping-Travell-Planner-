@@ -11,11 +11,12 @@ import {
   Listbox,
   ListboxItem,
 } from "@nextui-org/react";
-// import { CurrentlyScrapingTable } from "./components/currently-scraping-table";
-// import ScrapingQueue from "@/components/admin/scraping-queue/scraping-queue";
 import { apiClient } from "@/lib";
 import { ADMIN_API_ROUTES } from "@/utils/api-routes";
 import axios from "axios";
+import ScrapingQueue from "@/components/admin/scraping-queue/scraping-queue";
+import { CurrentlyScrapingTable } from "./components/currently-scraping-table";
+
 
 const ScrapeTrips = () => {
   const [cities, setCities] = useState([]);
@@ -45,18 +46,18 @@ const ScrapeTrips = () => {
 
 
   const startScraping = async () => {
-    // await apiClient.post(ADMIN_API_ROUTES.CREATE_JOB, {
-    //   url:
-    //     "https://packages.yatra.com/holidays/intl/search.htm?destination=" +
-    //     selectedCity,
-    //   jobType: { type: "location" },
-    // });
+    await apiClient.post(ADMIN_API_ROUTES.CREATE_JOB, {
+      url:
+        "https://packages.yatra.com/holidays/intl/search.htm?destination=" +
+        selectedCity,
+      jobType: { type: "location" },
+    });
   };
 
   useEffect(() => {
     const getData = async () => {
-    //   const data = await apiClient.get(ADMIN_API_ROUTES.JOB_DETAILS);
-    //   setJobs(data.data.jobs);
+      const data = await apiClient.get(ADMIN_API_ROUTES.JOB_DETAILS);
+      setJobs(data.data.jobs);
     };
     const interval = setInterval(() => getData(), 3000);
 
@@ -127,16 +128,16 @@ const ScrapeTrips = () => {
           <Button
             onClick={startScraping}
             size="lg"
-            className="w-full"
-            color="primary"
+            className="w-full bg-gray-700  text-white hover:bg-gray-700"
+            
           >
             Scrape
           </Button>
         </CardFooter>
       </Card>
-      {/* <ScrapingQueue /> */}
+      <ScrapingQueue />
       <div className="col-span-3">
-        {/* <CurrentlyScrapingTable jobs={jobs} /> */}
+        <CurrentlyScrapingTable jobs={jobs} />
       </div>
     </section>
   );
