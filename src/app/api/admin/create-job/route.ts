@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { Prisma } from "@prisma/client";
-import prisma from "../../../../lib/prisma";
+import { jobsQueue } from "@/lib";
 // import { scrapingQueue } from "../../../temp/queue";
 
 // import { importQueue } from "../../../../lib/queue";
@@ -10,7 +9,7 @@ export async function POST(request: Request) {
     const { url, jobType } = await request.json();
     const response = await prisma.jobs.create({ data: { url, jobType } });
 
-    // await importQueue.add("new location", { url, jobType, id: response.id });
+    await jobsQueue.add("new location", { url, jobType, id: response.id });
     return NextResponse.json(
       {
         jobCreated: true,

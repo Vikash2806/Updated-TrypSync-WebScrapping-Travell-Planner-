@@ -11,7 +11,7 @@ import {
   Listbox,
   ListboxItem,
 } from "@nextui-org/react";
-import { apiClient } from "@/lib";
+// import { apiClient } from "@/lib";
 import { ADMIN_API_ROUTES } from "@/utils/api-routes";
 import axios from "axios";
 import ScrapingQueue from "@/components/admin/scraping-queue/scraping-queue";
@@ -46,7 +46,7 @@ const ScrapeTrips = () => {
 
 
   const startScraping = async () => {
-    await apiClient.post(ADMIN_API_ROUTES.CREATE_JOB, {
+    await axios.post(ADMIN_API_ROUTES.CREATE_JOB, {
       url:
         "https://packages.yatra.com/holidays/intl/search.htm?destination=" +
         selectedCity,
@@ -56,7 +56,7 @@ const ScrapeTrips = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await apiClient.get(ADMIN_API_ROUTES.JOB_DETAILS);
+      const data = await axios.get(ADMIN_API_ROUTES.JOB_DETAILS);
       setJobs(data.data.jobs);
     };
     const interval = setInterval(() => getData(), 3000);
